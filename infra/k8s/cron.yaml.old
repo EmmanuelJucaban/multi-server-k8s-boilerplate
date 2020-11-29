@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+#  Here we specific the name of the pod to be posts
+  name: crons
+spec:
+  containers:
+#    Here we specify that inside of the pod call crons
+#    we should have a container named crons
+#    and build it using the image below
+    - name: crons
+      image: jukeaban/cronserver:0.0.1

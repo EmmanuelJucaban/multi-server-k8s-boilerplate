@@ -1,0 +1,39 @@
+version: '3'
+services:
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    depends_on:
+      - api
+      - cronserver
+    ports:
+      - '3001:80'
+      - '3002:80'
+  api:
+    restart: always
+    image: jukeaban/app
+    build:
+      dockerfile: Dockerfile.dev
+      #      Use all of the files inside of the ./server folder to build this image
+      context: ./server
+    volumes:
+      #      -Dont try to override this folder inside of the container
+      - /app/node_modules
+      #      Tells container that whenever it looks for something inside of the app folder in the container
+      #      except for the node modules, look for that something in the server folder in our current dir
+      - ./server:/app
+  cronserver:
+    restart: always
+    image: jukeaban/cronserver
+    build:
+      dockerfile: Dockerfile.dev
+      #      Use all of the files inside of the ./server folder to build this image
+      context: ./cronServer
+    volumes:
+      #      -Dont try to override this folder inside of the container
+      - /app/node_modules
+      #      Tells container that whenever it looks for something inside of the app folder in the container
+      #      except for the node modules, look for that something in the server folder in our current dir
+      - ./cronServer:/app
